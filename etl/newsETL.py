@@ -9,7 +9,6 @@ import os
 class newsET:
 
     def getAPISecret(self, project_id = "franchisecric", secret_id = "newsAPI", version_id = 1): 
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'/Users/nitheeshkoushikgattu/Desktop/franchisecric/gcpKey/franchisecric-33717479f254.json'
         client = secretmanager.SecretManagerServiceClient()
         name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
         response = client.access_secret_version(request={"name": name})
@@ -58,6 +57,10 @@ def loadData(df, dataset, table):
 
 
 if __name__ == "__main__":
+    parser = configparser.ConfigParser()
+    parser.read("pipeline.config")
+    gcp_cred = parser.get("gcp_cred_location", "location")
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = gcp_cred
     news = newsET()
     leagues = ["Indian Premier League", 
                "T20 Blast UK", "Big Bash T20 Australia", 
@@ -67,4 +70,6 @@ if __name__ == "__main__":
     for league in leagues: 
         df = news.transform(league)
         master = pd.concat([master, df[:5]],ignore_index= True)
-    loadData(master, "franchiseCricDS", "newsDF")
+    dataset = parser.get("gcp_bigQuery", "dataset")
+    news_df = parser.get("gcp_bigQuery", "news_df")
+    loadData(master, dataset, news_df)
