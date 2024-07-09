@@ -20,9 +20,8 @@ class newsET:
 
         url = ('https://newsapi.org/v2/everything?'
         f'q={league}&'
-        f'to={todayStr}'
+        f'to={todayStr}&'
         'language=en&'
-        'sortBy=relevancy&'
         f'apiKey={apiKey}')
 
         response = requests.get(url)
@@ -31,13 +30,15 @@ class newsET:
     
     def transform(self, league):
         articles = self.extract(league)
-        df = pd.json_normalize(articles, sep='_')
-        df = df[["source_name", "title", "urlToImage", "url", "publishedAt"]]
-        df['publishedAt'] = pd.to_datetime(df['publishedAt'])
-        df.sort_values(by="publishedAt", ascending = False)
-        df = df[~df["urlToImage"].isna()]
-        df["League"] = league
-        return df 
+        if articles != []:
+            df = pd.json_normalize(articles, sep='_')
+            print(articles, league)
+            df = df[["source_name", "title", "urlToImage", "url", "publishedAt"]]
+            df['publishedAt'] = pd.to_datetime(df['publishedAt'])
+            df.sort_values(by="publishedAt", ascending = False)
+            df = df[~df["urlToImage"].isna()]
+            df["League"] = league
+            return df 
     
 
 def loadData(df, dataset, table):
@@ -64,12 +65,13 @@ if __name__ == "__main__":
     news = newsET()
     leagues = ["Indian Premier League", 
                "T20 Blast UK", "Big Bash T20 Australia", 
-               "Pakistan Super League", "Bangladesh Premier League", "CSA T20 Challenge",
-               "Sri Lanka Premier League", "New Zealand Super Smash", "Caribbean Premier League"]
+               "Pakistan Super League", "Bangladesh Premier League",  "SA20 South Africa",
+               "Sri Lanka Premier League", "New Zealand Super Smash", "Caribbean Premier League", "Major League Cricket"]
     master = pd.DataFrame()
     for league in leagues: 
         df = news.transform(league)
-        master = pd.concat([master, df[:5]],ignore_index= True)
+        if df is not None:
+            master = pd.concat([master, df[:5]],ignore_index= True)
     dataset = parser.get("gcp_bigQuery", "dataset")
     news_df = parser.get("gcp_bigQuery", "news_df")
     loadData(master, dataset, news_df)
