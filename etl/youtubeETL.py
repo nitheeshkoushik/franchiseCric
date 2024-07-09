@@ -66,7 +66,7 @@ if __name__ == "__main__":
     leagues = ["Indian Premier League", 
                 "T20 Blast UK", "Big Bash T20 Australia", 
                 "Pakistan Super League", "Bangladesh Premier League", "CSA T20 Challenge",
-                "Sri Lanka Premier League", "New Zealand Super Smash", "Caribbean Premier League"]
+                "Sri Lanka Premier League", "New Zealand Super Smash", "Caribbean Premier League", "Major League Cricket"]
     master = pd.DataFrame()
     for league in leagues: 
         df = ytET.transform(league)
