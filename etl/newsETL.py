@@ -32,7 +32,6 @@ class newsET:
         articles = self.extract(league)
         if articles != []:
             df = pd.json_normalize(articles, sep='_')
-            print(articles, league)
             df = df[["source_name", "title", "urlToImage", "url", "publishedAt"]]
             df['publishedAt'] = pd.to_datetime(df['publishedAt'])
             df.sort_values(by="publishedAt", ascending = False)
