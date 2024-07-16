@@ -2,3 +2,5 @@ fc
 gcpKey
 .DS_Store
 pipeline.config
+et/__pycache__
+utils/__pycache__
