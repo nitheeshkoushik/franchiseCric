@@ -1,14 +1,14 @@
 from google.cloud import secretmanager, bigquery
 import pandas as pd 
-import configparser
-import os
 import requests
 
 class standingET:
 
-    
+    def __init__(self, apiSecret):
+        self.apiSecret = apiSecret
+
     def extract(self):
-        rapidAPIKey = self.getAPISecret()
+        rapidAPIKey = self.apiSecret
         url = "https://livescore6.p.rapidapi.com/leagues/v2/get-table"
         leagues = {"india" : "ipl", 
                 "england": "vitality-blast", 
@@ -46,16 +46,3 @@ class standingET:
             master = pd.concat([master, df],ignore_index= True)
         return master
     
-
-
-if __name__ == "__main__":
-    parser = configparser.ConfigParser()
-    parser.read("pipeline.config")
-    gcp_cred = parser.get("gcp_cred_location", "location")
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = gcp_cred
-    standing = standingET()
-
-    df = standing.transform()
-    dataset = parser.get("gcp_bigQuery", "dataset")
-    standings_df = parser.get("gcp_bigQuery", "standings_df")
-    # loadData(df, dataset, standings_df)

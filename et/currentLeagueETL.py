@@ -1,19 +1,19 @@
 import requests 
-import configparser
-import os
-from google.cloud import secretmanager, bigquery
 from datetime import datetime
 import pandas as pd
 
 class currentETL:
+    def __init__(self, apiSecret):
+        self.apiSecret = apiSecret
 
 
-    def getCurrentLeagues(self, apiSecret = None):
+
+    def getCurrentLeagues(self):
 
         url = "https://cricbuzz-cricket.p.rapidapi.com/series/v1/league"
 
         headers = {
-            "x-rapidapi-key": apiSecret,
+            "x-rapidapi-key": self.apiSecret,
             "x-rapidapi-host": "cricbuzz-cricket.p.rapidapi.com"
         }
 
@@ -30,10 +30,9 @@ class currentETL:
 
     def getStandings(self):
 
-        apiSecret = self.getAPISecret()
-        currentSeries = self.getCurrentLeagues(apiSecret)
+        currentSeries = self.getCurrentLeagues()
         headers = {
-            "x-rapidapi-key": apiSecret, 
+            "x-rapidapi-key": self.apiSecret, 
             "x-rapidapi-host": "cricbuzz-cricket.p.rapidapi.com"
         }
         final = []
@@ -70,16 +69,3 @@ class currentETL:
         df = df.fillna(0)
         return df
 
-
-        
-if __name__ == "__main__":
-    parser = configparser.ConfigParser()
-    parser.read("pipeline.config")
-    gcp_cred = parser.get("gcp_cred_location", "location")
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = gcp_cred
-    current = currentETL()
-
-    df = current.transform()
-    dataset = parser.get("gcp_bigQuery", "dataset")
-    current_df = parser.get("gcp_bigQuery", "current_df")
-    # loadData(df, dataset, current_df)
