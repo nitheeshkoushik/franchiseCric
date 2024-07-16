@@ -1,19 +1,11 @@
 from google.cloud import secretmanager, bigquery
-# import googleapiclient.discovery
-import ast
 import pandas as pd 
 import configparser
 import os
 import requests
-import json
 
 class standingET:
 
-    def getAPISecret(self, project_id = "franchisecric", secret_id = "rapidAPI", version_id = 1): 
-        client = secretmanager.SecretManagerServiceClient()
-        name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
-        response = client.access_secret_version(request={"name": name})
-        return response.payload.data.decode("UTF-8")
     
     def extract(self):
         rapidAPIKey = self.getAPISecret()
@@ -55,18 +47,6 @@ class standingET:
         return master
     
 
-def loadData(df, dataset, table):
-    client = bigquery.Client()
-    dataset_ref = client.dataset(dataset)
-    table_ref = dataset_ref.table(table)
-    job_config = bigquery.LoadJobConfig()
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
-    job = client.load_table_from_dataframe(
-        df, table_ref, job_config=job_config
-    )
-
-    job.result()
-    return None
 
 if __name__ == "__main__":
     parser = configparser.ConfigParser()
@@ -78,4 +58,4 @@ if __name__ == "__main__":
     df = standing.transform()
     dataset = parser.get("gcp_bigQuery", "dataset")
     standings_df = parser.get("gcp_bigQuery", "standings_df")
-    loadData(df, dataset, standings_df)
+    # loadData(df, dataset, standings_df)
