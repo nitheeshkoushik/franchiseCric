@@ -7,32 +7,44 @@ import os
 
 
 class newsET:
+    
+    def __init__(self, apiSecret) -> None:
+        self.apiSecret = apiSecret
 
     
-    def extract(self, league):
+    def extract(self):
         todayStr = datetime.today().strftime("%Y-%m-%d")
-        apiKey = self.getAPISecret()
+        leagues = ["Indian Premier League",
+               "T20 Blast UK", "Big Bash T20 Australia", 
+               "Pakistan Super League", "Bangladesh Premier League",  "SA20 South Africa",
+               "Sri Lanka Premier League", "New Zealand Super Smash", "Caribbean Premier League", "Major League Cricket"]
+        allLeagueArticles = []
+        for league in leagues:
+            url = ('https://newsapi.org/v2/everything?'
+            f'q={league}&'
+            f'to={todayStr}&'
+            'language=en&'
+            f'apiKey={self.apiSecret}')
 
-        url = ('https://newsapi.org/v2/everything?'
-        f'q={league}&'
-        f'to={todayStr}&'
-        'language=en&'
-        f'apiKey={apiKey}')
-
-        response = requests.get(url)
-        articles = response.json()["articles"]
-        return articles 
+            response = requests.get(url)
+            articles = response.json()["articles"]
+            for article in articles:
+                article['League'] = league
+            allLeagueArticles.extend(articles)
+        return allLeagueArticles
     
-    def transform(self, league):
-        articles = self.extract(league)
-        if articles != []:
-            df = pd.json_normalize(articles, sep='_')
-            df = df[["source_name", "title", "urlToImage", "url", "publishedAt"]]
-            df['publishedAt'] = pd.to_datetime(df['publishedAt'])
-            df.sort_values(by="publishedAt", ascending = False)
-            df = df[~df["urlToImage"].isna()]
-            df["League"] = league
-            return df 
+    def transform(self):
+        response = self.extract()
+        masterDF = pd.DataFrame()
+        for r in response:
+            if r != []:
+                df = pd.json_normalize(r, sep='_')
+                df = df[["source_name", "title", "urlToImage", "url", "publishedAt", 'League']]
+                df['publishedAt'] = pd.to_datetime(df['publishedAt'])
+                df.sort_values(by="publishedAt", ascending = False)
+                df = df[~df["urlToImage"].isna()]
+                masterDF = pd.concat([masterDF, df])
+        return masterDF 
     
 
 
