@@ -1,4 +1,3 @@
-from google.cloud import secretmanager, bigquery
 import pandas as pd 
 import requests
 

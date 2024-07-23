@@ -1,8 +1,7 @@
-from google.cloud import secretmanager, bigquery
+
 import googleapiclient.discovery
 import pandas as pd 
-import configparser
-import os
+
 
 
 class youtubeET:
