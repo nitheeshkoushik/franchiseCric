@@ -10,10 +10,10 @@ This project has two sides to it:
 
 - Web App side 
 
+## Explaination
+### Data Engineering 
 
-## Data Engineering 
-
-### Data Extraction and Transformation
+#### Data Extraction and Transformation
 
 I wrote some python scripts that gather uses 3 API endpoints to get data from:
 
@@ -26,14 +26,19 @@ I wrote some python scripts that gather uses 3 API endpoints to get data from:
 - CrickBuzz API 
     - This API is used to create 2 dataframes, Popular leagues and Currently happening leagues
 
-### Data Loading 
+#### Data Loading 
 
 GCP's BigQuery is used as a data warehouse where all of these data frames are stored 
 
-### Orchestration 
+#### Orchestration 
 
 I cronjob runs these scripts every 8 hours and does the ETL process 
 
-## Web App 
+### Web App 
 
 I'm using Streamlit to develop this web app (still under development). This app is containerized using Docker and deployed on Cloud Run. 
+
+
+## Project Architechture 
+
+![Project Architechture](./images/franchiseCricArchDiagram.png)
