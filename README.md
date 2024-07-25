@@ -1,44 +1,45 @@
-# Franchice Cricket Web App 
+# Franchise Cricket Web App
 
-I've always been a huge fan of Franchice Cricket, but I also hated the fact that the IPL gets way more attention than all the other leagues around the world. 
+I've always been a huge fan of Franchise Cricket, but I dislike the fact that the IPL gets way more attention than all the other leagues around the world. 
 
-This is app, mixes two of my passions together, Data Engineering and Cricket. Through this app, I wanted to have all things (well, most things) that I like about franchise cricket at one place. 
+This app combines two of my passions: Data Engineering and Cricket. Through this app, I aim to bring together all the elements (or at least most of them) that I love about franchise cricket in one place.
 
-This project has two sides to it:
+This project has two main components:
 
-- Data Engineering side
+- Data Engineering
+- Web App
 
-- Web App side 
+## Explanation
 
-## Explaination
-### Data Engineering 
+### Data Engineering
 
 #### Data Extraction and Transformation
 
-I wrote some python scripts that gather uses 3 API endpoints to get data from:
+I wrote some Python scripts that utilize three API endpoints to fetch data from:
 
-- News API
-    - This gets fresh news from all the major cricket leagues around the world and transforms it into a DataFrame 
+- **News API**
+    - Fetches fresh news from major cricket leagues around the world and transforms it into a DataFrame.
 
-- YouTube API
-    - This collects new youtube videos from major cricket leagues around the world and transforms it into a DataFrame
+- **YouTube API**
+    - Collects new YouTube videos from major cricket leagues around the world and transforms them into a DataFrame.
 
-- CrickBuzz API 
-    - This API is used to create 2 dataframes, Popular leagues and Currently happening leagues
+- **CricBuzz API**
+    - Used to create two DataFrames: Popular Leagues and Currently Happening Leagues.
 
-#### Data Loading 
+#### Data Loading
 
-GCP's BigQuery is used as a data warehouse where all of these data frames are stored 
+Google Cloud Platform's BigQuery is used as a data warehouse to store all of these DataFrames.
 
-#### Orchestration 
+#### Orchestration
 
-I cronjob runs these scripts every 8 hours and does the ETL process 
+A cron job runs these scripts every 8 hours to perform the ETL process.
 
-### Web App 
+### Web App
 
-I'm using Streamlit to develop this web app (still under development). This app is containerized using Docker and deployed on Cloud Run. 
+I'm using Streamlit to develop this web app (currently under development). This app is containerized using Docker and deployed on Cloud Run.
 
+## Project Architecture
 
-## Project Architechture 
+![Project Architecture](./images/franchiseCricArchDiagram.png)
 
-![Project Architechture](./images/franchiseCricArchDiagram.png)
+This project architecture shows how data flows from the API endpoints through the ETL process and into the web app, providing a comprehensive view of franchise cricket from various leagues around the world.
