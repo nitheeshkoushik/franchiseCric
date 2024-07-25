@@ -4,13 +4,12 @@ import requests
 from PIL import Image
 from io import BytesIO
 from google.cloud import bigquery
-from utils.getDFLoc import GetDFLoc
 
-dfLocator = GetDFLoc()
+
+
 client = bigquery.Client()
 
 def readData():
-    newsDFLoc = dfLocator.getDFLocation('news_df')
     query = f"""
     SELECT *
     FROM `franchisecric.franchiseCricDS.newsDF`
