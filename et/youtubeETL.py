@@ -20,7 +20,7 @@ class youtubeET:
             )
         result = []
         for league in leagues:
-            query = league + ' Podcasts'
+            query = league
             search_response = (
             youtube.search()
             .list(
