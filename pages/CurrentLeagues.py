@@ -27,7 +27,7 @@ def pageStructure(df):
 
 def pointsTable(filtered_df):
 
-    newDF = filtered_df.sort_values(by = ['points', 'nrr'], ascending = False)
+    newDF = filtered_df.sort_values(by = ['points', 'nrr'], ascending = [False, False])
     newDF = newDF[['teamFullName', 'matchesPlayed', 'matchesWon', 'matchesLost', 'points', 'nrr']]
     newDF = newDF.rename({'teamFullName': 'Team', 
                             'matchesPlayed': 'Played', 
