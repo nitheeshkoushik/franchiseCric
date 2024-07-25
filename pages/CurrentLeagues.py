@@ -3,16 +3,15 @@ from PIL import Image
 from io import BytesIO
 import requests
 from google.cloud import bigquery
-from utils.getDFLoc import GetDFLoc
 
-dfLocator = GetDFLoc()
+
+
 client = bigquery.Client()
 
 def readData():
-    currentDFLoc = dfLocator.getDFLocation('current_df')
     query = f"""
     SELECT *
-    FROM `{currentDFLoc}`
+    FROM `franchisecric.franchiseCricDS.currentStandingsDF`
     """
     df = client.query_and_wait(query).to_dataframe()
     return df

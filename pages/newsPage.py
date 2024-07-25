@@ -13,7 +13,7 @@ def readData():
     newsDFLoc = dfLocator.getDFLocation('news_df')
     query = f"""
     SELECT *
-    FROM `{newsDFLoc}`
+    FROM `franchisecric.franchiseCricDS.newsDF`
     """
     df = client.query_and_wait(query).to_dataframe()
     return df

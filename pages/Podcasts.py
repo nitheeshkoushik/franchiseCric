@@ -4,16 +4,15 @@ import requests
 from PIL import Image
 from io import BytesIO
 from google.cloud import bigquery
-from utils.getDFLoc import GetDFLoc
 
-dfLocator = GetDFLoc()
+
 client = bigquery.Client()
 
 def readData():
-    youtubeDFLoc = dfLocator.getDFLocation('youtube_df')
+
     query = f"""
     SELECT *
-    FROM `{youtubeDFLoc}`
+    FROM `franchisecric.franchiseCricDS.youtubeDF`
     """
     df = client.query_and_wait(query).to_dataframe()
     return df
