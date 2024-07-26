@@ -46,7 +46,7 @@ def pointsTable(filtered_df):
     Args:
         filtered_df (pd.DataFrame): The DataFrame containing the filtered standings data.
     """
-    newDF = filtered_df.sort_values(by=['points', 'nrr'], ascending=[False, False])
+    newDF = filtered_df.sort_values(by=['points', 'nrr'], ascending=[False, False]).reset_index()
     newDF = newDF[['teamFullName', 'matchesPlayed', 'matchesWon', 'matchesLost', 'points', 'nrr']]
     newDF = newDF.rename({'teamFullName': 'Team', 
                           'matchesPlayed': 'Played', 
