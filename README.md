@@ -43,3 +43,9 @@ I'm using Streamlit to develop this web app (currently under development). This 
 ![Project Architecture](./images/franchiseCricArchDiagram.png)
 
 This project architecture shows how data flows from the API endpoints through the ETL process and into the web app, providing a comprehensive view of franchise cricket from various leagues around the world.
+
+## CI/CD pipeline
+
+![Project Architecture](./images/cicdPipeline.png)
+
+This is CI/CD pipeline of this project, when ever a certain code is pushed to this repo, Cloud Build gets triggered and bulids an image in Artifact Registry and runs on Cloud Run. 
